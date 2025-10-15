@@ -163,6 +163,8 @@ section_open_aliased = '[section='i (nonbracket+ >mark_a1 %mark_a2) ']';
 section_open_aliased_expanded = '[section,expanded='i (nonbracket+ >mark_a1 %mark_a2) ']';
 
 quote_open = '[quote]'i;
+quote_open_colored = '[quote='i ([a-z]+|'#'i[0-9a-fA-F]{3,6}) >mark_a1 %mark_a2 ']';
+quote_open_colored_typed = '[quote='i ('art'i('ist'i)?|'char'i('acter'i)?|'copy'i('right'i)?|'spec'i('ies'i)?|'inv'i('alid'i)?|'meta'i|'lore'i) >mark_a1 %mark_a2 ']';
 quote_close = '[/quote'i (']' when in_quote);
 
 internal_anchor = '[#' ((alnum | [_\-])+ >mark_a1 %mark_a2) ']';
