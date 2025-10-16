@@ -1390,14 +1390,14 @@ tr47:
 #line 617 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p)+1;{
     dstack_close_leaf_blocks();
-    dstack_open_block(BLOCK_QUOTE, "<blockquote>");
-    append("<span class=\"dtext-quote-color\" style=\"border-left-color:");
+    dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-quote-color\" style=\"border-left-color:");
     if(a1[0] == '#') {
       append("#");
       append_uri_escaped({ a1 + 1, a2 });
     } else {
       append_uri_escaped({ a1, a2 });
     }
+    append("\">");
   }}
 	goto st735;
 tr53:
