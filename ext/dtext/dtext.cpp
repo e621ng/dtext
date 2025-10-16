@@ -1387,7 +1387,7 @@ tr16:
 tr47:
 #line 93 "ext/dtext/dtext.cpp.rl"
 	{ a2 = p; }
-#line 617 "ext/dtext/dtext.cpp.rl"
+#line 624 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p)+1;{
     dstack_close_leaf_blocks();
     dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-quote-color\" style=\"border-left-color:");
@@ -1403,7 +1403,7 @@ tr47:
 tr53:
 #line 93 "ext/dtext/dtext.cpp.rl"
 	{ a2 = p; }
-#line 629 "ext/dtext/dtext.cpp.rl"
+#line 617 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p)+1;{
     dstack_close_leaf_blocks();
     dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-sidebar-colored-");
@@ -2645,7 +2645,7 @@ st84:
 case 84:
 	switch( (*( sm->p)) ) {
 		case 73: goto st33;
-		case 93: goto tr47;
+		case 93: goto tr53;
 		case 105: goto st85;
 	}
 	if ( 97 <= (*( sm->p)) && (*( sm->p)) <= 122 )
@@ -2680,7 +2680,7 @@ st87:
 		goto _test_eof87;
 case 87:
 	if ( (*( sm->p)) == 93 )
-		goto tr47;
+		goto tr53;
 	if ( 97 <= (*( sm->p)) && (*( sm->p)) <= 122 )
 		goto st82;
 	goto tr2;
@@ -2733,7 +2733,7 @@ st91:
 case 91:
 	switch( (*( sm->p)) ) {
 		case 65: goto st40;
-		case 93: goto tr47;
+		case 93: goto tr53;
 		case 97: goto st92;
 	}
 	if ( 98 <= (*( sm->p)) && (*( sm->p)) <= 122 )
@@ -2819,7 +2819,7 @@ st98:
 case 98:
 	switch( (*( sm->p)) ) {
 		case 82: goto st47;
-		case 93: goto tr47;
+		case 93: goto tr53;
 		case 114: goto st99;
 	}
 	if ( 97 <= (*( sm->p)) && (*( sm->p)) <= 122 )
@@ -2903,7 +2903,7 @@ st105:
 case 105:
 	switch( (*( sm->p)) ) {
 		case 82: goto st54;
-		case 93: goto tr47;
+		case 93: goto tr53;
 		case 114: goto st106;
 	}
 	if ( 97 <= (*( sm->p)) && (*( sm->p)) <= 122 )
@@ -2980,7 +2980,7 @@ st111:
 case 111:
 	switch( (*( sm->p)) ) {
 		case 69: goto st60;
-		case 93: goto tr47;
+		case 93: goto tr53;
 		case 101: goto st112;
 	}
 	if ( 97 <= (*( sm->p)) && (*( sm->p)) <= 122 )
@@ -3057,7 +3057,7 @@ st117:
 case 117:
 	switch( (*( sm->p)) ) {
 		case 65: goto st66;
-		case 93: goto tr47;
+		case 93: goto tr53;
 		case 97: goto st118;
 	}
 	if ( 98 <= (*( sm->p)) && (*( sm->p)) <= 122 )
@@ -3134,7 +3134,7 @@ st123:
 case 123:
 	switch( (*( sm->p)) ) {
 		case 69: goto st35;
-		case 93: goto tr47;
+		case 93: goto tr53;
 		case 101: goto st87;
 	}
 	if ( 97 <= (*( sm->p)) && (*( sm->p)) <= 122 )
@@ -3228,7 +3228,7 @@ st130:
 case 130:
 	switch( (*( sm->p)) ) {
 		case 73: goto st79;
-		case 93: goto tr47;
+		case 93: goto tr53;
 		case 105: goto st131;
 	}
 	if ( 97 <= (*( sm->p)) && (*( sm->p)) <= 122 )

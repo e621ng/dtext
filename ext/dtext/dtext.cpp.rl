@@ -177,8 +177,8 @@ section_open_aliased_expanded = '[section,expanded='i (nonbracket+ >mark_a1 %mar
 section_close = '[/section'i (']' when in_section);
 
 quote_open = '[quote]'i;
-quote_open_colored = '[quote='i color_value >mark_a1 %mark_a2 ']';
 quote_open_colored_typed = '[quote='i color_name >mark_a1 %mark_a2 ']';
+quote_open_colored = '[quote='i color_value >mark_a1 %mark_a2 ']';
 quote_close = '[/quote'i (']' when in_quote);
 
 internal_anchor = '[#' ((alnum | [_\-])+ >mark_a1 %mark_a2) ']';
