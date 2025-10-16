@@ -605,6 +605,13 @@ main := |*
     dstack_open_block(BLOCK_QUOTE, "<blockquote>");
   };
 
+  quote_open_colored_typed => {
+    dstack_close_leaf_blocks();
+    dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-sidebar-colored-");
+    append_uri_escaped({ a1, a2 });
+    append("\">");
+  };
+
   quote_open_colored => {
     dstack_close_leaf_blocks();
     dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-quote-color\" style=\"border-left-color:");
@@ -614,13 +621,6 @@ main := |*
     } else {
       append_uri_escaped({ a1, a2 });
     }
-    append("\">");
-  };
-
-  quote_open_colored_typed => {
-    dstack_close_leaf_blocks();
-    dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-quote-");
-    append_uri_escaped({ a1, a2 });
     append("\">");
   };
 

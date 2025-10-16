@@ -1406,7 +1406,7 @@ tr53:
 #line 629 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p)+1;{
     dstack_close_leaf_blocks();
-    dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-quote-");
+    dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-sidebar-colored-");
     append_uri_escaped({ a1, a2 });
     append("\">");
   }}
