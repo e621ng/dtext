@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'dtext'
 require_relative 'test_helper'
 
+# Tests for color tags, like [color=red]text[/color], [color=#ffaa11]text[/color], and [color=artist]text[/color].
 class DTextColorTest < Minitest::Test
   include DTextTestHelper
 
