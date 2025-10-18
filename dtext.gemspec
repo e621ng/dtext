@@ -3,7 +3,7 @@
 require_relative "lib/dtext/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "dtext_rb"
+  spec.name = "dtext"
   spec.version = DText::VERSION
   spec.authors = ["r888888888", "evazion", "earlopain"]
 
