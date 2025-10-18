@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'dtext'
 require_relative 'test_helper'
 
+# Tests for code blocks and inline code, like `[code]block[/code]` and `inline`.
 class DTextCodeTest < Minitest::Test
   include DTextTestHelper
 
