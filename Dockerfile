@@ -1,4 +1,4 @@
-FROM ruby:3.1.3-alpine3.17
+FROM ruby:3.3.1-alpine3.20
 
 RUN apk --no-cache add build-base ragel
 
