@@ -213,7 +213,7 @@ print_step "Changes committed"
 echo
 echo -e "${BLUE}Step 5: Creating git tag${NC}"
 if [[ "$DRY_RUN" == "true" ]]; then
-    print_dry_run "git tag -a \"$new_version\"
+    print_dry_run "git tag -a \"$new_version\""
 else
     git tag -a "$new_version"
 fi
