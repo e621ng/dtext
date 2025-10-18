@@ -139,7 +139,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
     echo
 else
     echo
-    read -p "Continue with release v$new_version? (y/N): " confirm
+    read -p "Continue with release $new_version? (y/N): " confirm
     
     if [[ ! $confirm =~ ^[Yy]$ ]]; then
         echo "Release cancelled"
@@ -148,7 +148,7 @@ else
 fi
 
 echo
-print_step "Starting release process for v$new_version"
+print_step "Starting release process for $new_version"
 
 # Step 1: Regenerate dtext.cpp
 echo
@@ -194,15 +194,15 @@ echo
 echo -e "${BLUE}Step 4: Committing changes${NC}"
 if [[ "$DRY_RUN" == "true" ]]; then
     print_dry_run "git add ext/dtext/dtext.cpp lib/dtext/version.rb"
-    print_dry_run "git commit -m \"Release v$new_version\""
+    print_dry_run "git commit -m \"[Release] Version $new_version\""
     echo -e "${PURPLE}[DRY RUN]${NC} Commit message would be:"
-    echo "    Release v$new_version"
+    echo "    Release $new_version"
     echo "    "
     echo "    - Regenerate dtext.cpp"
     echo "    - Bump version to $new_version"
 else
     git add ext/dtext/dtext.cpp lib/dtext/version.rb
-    git commit -m "Release v$new_version
+    git commit -m "[Release] Version $new_version
 
 - Regenerate dtext.cpp
 - Bump version to $new_version"
@@ -213,18 +213,18 @@ print_step "Changes committed"
 echo
 echo -e "${BLUE}Step 5: Creating git tag${NC}"
 if [[ "$DRY_RUN" == "true" ]]; then
-    print_dry_run "git tag -a \"v$new_version\" -m \"Release v$new_version\""
+    print_dry_run "git tag -a \"$new_version\"
 else
-    git tag -a "v$new_version" -m "Release v$new_version"
+    git tag -a "$new_version"
 fi
-print_step "Tag v$new_version created"
+print_step "Tag $new_version created"
 
 # Step 6: Push changes
 echo
 echo -e "${BLUE}Step 6: Pushing to remote${NC}"
 if [[ "$DRY_RUN" == "true" ]]; then
     print_dry_run "git push origin master"
-    print_dry_run "git push origin \"v$new_version\""
+    print_dry_run "git push origin \"$new_version\""
     print_step "Changes would be pushed to remote"
 else
     echo "This will push the commit and tag to origin/master"
@@ -232,7 +232,7 @@ else
     
     if [[ $push_confirm =~ ^[Yy]$ ]]; then
         git push origin master
-        git push origin "v$new_version"
+        git push origin "$new_version"
         print_step "Changes pushed to remote"
     else
         print_warning "Changes committed locally but NOT pushed to remote"
@@ -241,17 +241,17 @@ fi
 
 echo
 if [[ "$DRY_RUN" == "true" ]]; then
-    echo -e "${PURPLE} Dry run completed for v$new_version!${NC}"
+    echo -e "${PURPLE} Dry run completed for $new_version!${NC}"
     echo
     echo "Summary of changes that would be made:"
     echo "• Parser would be regenerated from Ragel source"
     echo "• Version would be bumped from $current_version to $new_version ($BUMP_TYPE)"
     echo "• Git commit would be created with version bump and regenerated files"
-    echo "• Git tag v$new_version would be created"
+    echo "• Git tag $new_version would be created"
     echo "• Changes would be pushed to origin/master"
     echo
     echo "To execute this release for real, run without --dry-run:"
     echo -e "${BLUE}./scripts/release.sh $BUMP_TYPE${NC}"
 else
-    echo -e "${GREEN} Release v$new_version completed successfully!${NC}"
+    echo -e "${GREEN} Release $new_version completed successfully!${NC}"
 fi
