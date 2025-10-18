@@ -2,5 +2,5 @@
 
 !/Gemfile
 !/Gemfile.lock
-!/dtext_rb.gemspec
+!/dtext.gemspec
 !/lib/dtext/version.rb
