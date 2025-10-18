@@ -9,6 +9,6 @@ services:
     image: dtext
     volumes:
       - .:/app
-    entrypoint: rake
+    entrypoint: ["bundle", "exec", "rake"]
     profiles: 
       - "rake"
