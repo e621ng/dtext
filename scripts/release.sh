@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # DText Release Script
-# This script automates the release process for the dtext_rb gem
+# This script automates the release process for the dtext gem
 #
 # Usage:
 #   ./scripts/release.sh [patch|minor|major] [--dry-run]
@@ -87,8 +87,8 @@ print_dry_run() {
 }
 
 # Check if we're in the right directory
-if [[ ! -f "dtext_rb.gemspec" ]]; then
-    print_error "Error: Must be run from the dtext_rb project root directory"
+if [[ ! -f "dtext.gemspec" ]]; then
+    print_error "Error: Must be run from the dtext project root directory"
     exit 1
 fi
 

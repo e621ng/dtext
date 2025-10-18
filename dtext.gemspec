@@ -5,10 +5,10 @@ require_relative "lib/dtext/version"
 Gem::Specification.new do |spec|
   spec.name = "dtext"
   spec.version = DText::VERSION
-  spec.authors = ["r888888888", "evazion", "earlopain"]
+  spec.authors = ["r888888888", "evazion", "earlopain", "sindrake"]
 
   spec.summary = "E621 DText parser"
-  spec.homepage = "http://github.com/e621ng/dtext_rb"
+  spec.homepage = "http://github.com/e621ng/dtext"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
   spec.extensions = ["ext/dtext/extconf.rb"]
