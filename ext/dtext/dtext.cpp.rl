@@ -134,7 +134,7 @@ color_name = (
   | 'lor'i ('e'i)?
   );
 
-color_value = ([a-z]+ | '#'i[0-9a-fA-F]{3,6});
+color_value = (([a-z]+ - color_name) | '#'i[0-9a-fA-F]{3,6});
 
 color_open = '[color='i color_value >mark_a1 %mark_a2 ']';
 color_typed = '[color='i color_name >mark_a1 %mark_a2 ']';
