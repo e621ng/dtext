@@ -18,8 +18,17 @@ Rake::ExtensionTask.new "dtext" do |ext|
   ext.lib_dir = "lib/dtext"
 end
 
+# Smart file task: checks dependencies normally, but can be forced
 file "ext/dtext/dtext.cpp" => Dir["ext/dtext/dtext.{cpp.rl,h}", "Rakefile"] do
   sh "ragel -G2 -C ext/dtext/dtext.cpp.rl -o ext/dtext/dtext.cpp"
+end
+
+# Force regeneration task for explicit compilation
+desc "Force recompilation of Ragel files and compile extension"
+task "compile:force" do
+  # Remove the file to force regeneration, then compile
+  rm_f "ext/dtext/dtext.cpp"
+  Rake::Task["compile"].invoke
 end
 
 def run_dtext(*args)

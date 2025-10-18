@@ -154,9 +154,9 @@ print_step "Starting release process for v$new_version"
 echo
 echo -e "${BLUE}Step 1: Regenerating parser${NC}"
 if [[ "$DRY_RUN" == "true" ]]; then
-    print_dry_run "docker compose run --rm rake compile"
+    print_dry_run "docker compose run --rm rake compile:force"
 else
-    docker compose run --rm rake compile
+    docker compose run --rm rake compile:force
 fi
 print_step "Parser regenerated successfully"
 
