@@ -172,11 +172,13 @@ header = 'h'i [123456] >mark_a1 %mark_a2 '.' ws*;
 
 section_open = '[section]'i;
 section_open_expanded = '[section,expanded]'i;
-section_close = '[/section'i (']' when in_section);
 section_open_aliased = '[section='i (nonbracket+ >mark_a1 %mark_a2) ']';
 section_open_aliased_expanded = '[section,expanded='i (nonbracket+ >mark_a1 %mark_a2) ']';
+section_close = '[/section'i (']' when in_section);
 
 quote_open = '[quote]'i;
+quote_open_colored_typed = '[quote='i color_name >mark_a1 %mark_a2 ']';
+quote_open_colored = '[quote='i color_value >mark_a1 %mark_a2 ']';
 quote_close = '[/quote'i (']' when in_quote);
 
 internal_anchor = '[#' ((alnum | [_\-])+ >mark_a1 %mark_a2) ']';
@@ -431,6 +433,20 @@ inline := |*
     fret;
   };
 
+  quote_open_colored => {
+    g_debug("inline [quote=color]");
+    dstack_close_leaf_blocks();
+    fexec ts;
+    fret;
+  };
+
+  quote_open_colored_typed => {
+    g_debug("inline [quote=type]");
+    dstack_close_leaf_blocks();
+    fexec ts;
+    fret;
+  };
+
   newline? quote_close ws* => {
     g_debug("inline [/quote]");
     dstack_close_until(BLOCK_QUOTE);
@@ -587,6 +603,25 @@ main := |*
   quote_open space* => {
     dstack_close_leaf_blocks();
     dstack_open_block(BLOCK_QUOTE, "<blockquote>");
+  };
+
+  quote_open_colored_typed => {
+    dstack_close_leaf_blocks();
+    dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-sidebar-colored-");
+    append_uri_escaped({ a1, a2 });
+    append("\">");
+  };
+
+  quote_open_colored => {
+    dstack_close_leaf_blocks();
+    dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-quote-color\" style=\"border-left-color:");
+    if(a1[0] == '#') {
+      append("#");
+      append_uri_escaped({ a1 + 1, a2 });
+    } else {
+      append_uri_escaped({ a1, a2 });
+    }
+    append("\">");
   };
 
   spoilers_open space* => {
