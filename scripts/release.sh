@@ -189,29 +189,46 @@ else
 fi
 print_step "Version updated to $new_version"
 
-# Step 4: Commit changes
+# Step 4: Update Gemfile.lock
 echo
-echo -e "${BLUE}Step 4: Committing changes${NC}"
+echo -e "${BLUE}Step 4: Updating Gemfile.lock${NC}"
 if [[ "$DRY_RUN" == "true" ]]; then
-    print_dry_run "git add ext/dtext/dtext.cpp lib/dtext/version.rb"
+    print_dry_run "bundle install"
+    print_step "Gemfile.lock would be updated with new version"
+else
+    if bundle install; then
+        print_step "Gemfile.lock updated successfully"
+    else
+        print_error "Failed to update Gemfile.lock - aborting release"
+        exit 1
+    fi
+fi
+
+# Step 5: Commit changes
+echo
+echo -e "${BLUE}Step 5: Committing changes${NC}"
+if [[ "$DRY_RUN" == "true" ]]; then
+    print_dry_run "git add ext/dtext/dtext.cpp lib/dtext/version.rb Gemfile.lock"
     print_dry_run "git commit -m \"[Release] Version $new_version\""
     echo -e "${PURPLE}[DRY RUN]${NC} Commit message would be:"
     echo "    Release $new_version"
     echo "    "
     echo "    - Regenerate dtext.cpp"
     echo "    - Bump version to $new_version"
+    echo "    - Update Gemfile.lock"
 else
-    git add ext/dtext/dtext.cpp lib/dtext/version.rb
+    git add ext/dtext/dtext.cpp lib/dtext/version.rb Gemfile.lock
     git commit -m "[Release] Version $new_version
 
 - Regenerate dtext.cpp
-- Bump version to $new_version"
+- Bump version to $new_version
+- Update Gemfile.lock"
 fi
 print_step "Changes committed"
 
-# Step 5: Create tag
+# Step 6: Create tag
 echo
-echo -e "${BLUE}Step 5: Creating git tag${NC}"
+echo -e "${BLUE}Step 6: Creating git tag${NC}"
 if [[ "$DRY_RUN" == "true" ]]; then
     print_dry_run "git tag -a \"$new_version\" -m \"Release $new_version\""
 else
@@ -219,9 +236,9 @@ else
 fi
 print_step "Tag $new_version created"
 
-# Step 6: Push changes
+# Step 7: Push changes
 echo
-echo -e "${BLUE}Step 6: Pushing to remote${NC}"
+echo -e "${BLUE}Step 7: Pushing to remote${NC}"
 if [[ "$DRY_RUN" == "true" ]]; then
     print_dry_run "git push origin master"
     print_dry_run "git push origin \"$new_version\""
@@ -246,6 +263,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
     echo "Summary of changes that would be made:"
     echo "• Parser would be regenerated from Ragel source"
     echo "• Version would be bumped from $current_version to $new_version ($BUMP_TYPE)"
+    echo "• Gemfile.lock would be updated to reflect new version"
     echo "• Git commit would be created with version bump and regenerated files"
     echo "• Git tag $new_version would be created"
     echo "• Changes would be pushed to origin/master"
