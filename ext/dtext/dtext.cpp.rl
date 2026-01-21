@@ -192,10 +192,34 @@ basic_inline := |*
   '[/s]'i   => { dstack_close_inline(INLINE_S, "</s>"); };
   '[u]'i    => { dstack_open_inline(INLINE_U, "<u>"); };
   '[/u]'i   => { dstack_close_inline(INLINE_U, "</u>"); };
-  '[sup]'i  => { dstack_open_inline(INLINE_SUP, "<sup>"); };
-  '[/sup]'i => { dstack_close_inline(INLINE_SUP, "</sup>"); };
-  '[sub]'i  => { dstack_open_inline(INLINE_SUB, "<sub>"); };
-  '[/sub]'i => { dstack_close_inline(INLINE_SUB, "</sub>"); };
+  '[sup]'i  => {
+    if (dstack_count(INLINE_SUP) + dstack_count(INLINE_SUB) < 3) {
+      dstack_open_inline(INLINE_SUP, "<sup>");
+    } else {
+      ignored_sup_sub_tags++;
+    }
+  };
+  '[/sup]'i => {
+    if (ignored_sup_sub_tags > 0) {
+      ignored_sup_sub_tags--;
+    } else {
+      dstack_close_inline(INLINE_SUP, "</sup>");
+    }
+  };
+  '[sub]'i  => {
+    if (dstack_count(INLINE_SUP) + dstack_count(INLINE_SUB) < 3) {
+      dstack_open_inline(INLINE_SUB, "<sub>");
+    } else {
+      ignored_sup_sub_tags++;
+    }
+  };
+  '[/sub]'i => {
+    if (ignored_sup_sub_tags > 0) {
+      ignored_sup_sub_tags--;
+    } else {
+      dstack_close_inline(INLINE_SUB, "</sub>");
+    }
+  };
   any => { append_html_escaped(fc); };
 *|;
 
@@ -319,10 +343,34 @@ inline := |*
   '[/s]'i => { dstack_close_inline(INLINE_S, "</s>"); };
   '[u]'i  => { dstack_open_inline(INLINE_U, "<u>"); };
   '[/u]'i => { dstack_close_inline(INLINE_U, "</u>"); };
-  '[sup]'i  => { dstack_open_inline(INLINE_SUP, "<sup>"); };
-  '[/sup]'i => { dstack_close_inline(INLINE_SUP, "</sup>"); };
-  '[sub]'i  => { dstack_open_inline(INLINE_SUB, "<sub>"); };
-  '[/sub]'i => { dstack_close_inline(INLINE_SUB, "</sub>"); };
+  '[sup]'i  => {
+    if (dstack_count(INLINE_SUP) + dstack_count(INLINE_SUB) < 3) {
+      dstack_open_inline(INLINE_SUP, "<sup>");
+    } else {
+      ignored_sup_sub_tags++;
+    }
+  };
+  '[/sup]'i => {
+    if (ignored_sup_sub_tags > 0) {
+      ignored_sup_sub_tags--;
+    } else {
+      dstack_close_inline(INLINE_SUP, "</sup>");
+    }
+  };
+  '[sub]'i  => {
+    if (dstack_count(INLINE_SUP) + dstack_count(INLINE_SUB) < 3) {
+      dstack_open_inline(INLINE_SUB, "<sub>");
+    } else {
+      ignored_sup_sub_tags++;
+    }
+  };
+  '[/sub]'i => {
+    if (ignored_sup_sub_tags > 0) {
+      ignored_sup_sub_tags--;
+    } else {
+      dstack_close_inline(INLINE_SUB, "</sub>");
+    }
+  };
 
   color_typed => {
     if(options.allow_color) {

@@ -25,6 +25,20 @@ class DTextSimpleFormatTest < Minitest::Test
     assert_parse("<p><sup><sup>test</sup></sup></p>", "[sup][sup]test[/sup][/sup]")
   end
 
+  def test_sub_sup_nesting_limit
+    # Only first 3 levels should be rendered
+    assert_parse("<p><sup><sup><sup>test</sup></sup></sup></p>", "[sup][sup][sup][sup]test[/sup][/sup][/sup][/sup]")
+    assert_parse("<p><sub><sub><sub>test</sub></sub></sub></p>", "[sub][sub][sub][sub]test[/sub][/sub][/sub][/sub]")
+    
+    # Mixed content with trimmed tags
+    assert_parse("<p>before<sup><sup><sup>middle</sup></sup></sup>after</p>", "before[sup][sup][sup][sup]middle[/sup][/sup][/sup][/sup]after")
+    
+    # Combined sup and sub limit
+    assert_parse("<p><sup><sup><sub>test</sub></sup></sup></p>", "[sup][sup][sub]test[/sub][/sup][/sup]")
+    assert_parse("<p><sup><sup><sub>test</sub></sup></sup></p>", "[sup][sup][sub][sup]test[/sup][/sub][/sup][/sup]")
+    assert_parse("<p><sub><sub><sup>test</sup></sub></sub></p>", "[sub][sub][sup][sub]test[/sub][/sup][/sub][/sub]")
+  end
+
   def test_old_asterisks
     assert_parse("<p>hello *world* neutral</p>", "hello *world* neutral")
   end
