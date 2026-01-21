@@ -114,6 +114,7 @@ private:
   const char * b2 = NULL;
 
   bool header_mode = false;
+  int ignored_sup_sub_tags = 0;
 
   std::vector<long> posts;
   std::string output;
