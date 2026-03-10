@@ -65,7 +65,7 @@ static char32_t boundary_characters[] = {
 };
 
 
-#line 754 "ext/dtext/dtext.cpp.rl"
+#line 758 "ext/dtext/dtext.cpp.rl"
 
 
 
@@ -82,7 +82,7 @@ static const int dtext_en_table = 811;
 static const int dtext_en_main = 735;
 
 
-#line 757 "ext/dtext/dtext.cpp.rl"
+#line 761 "ext/dtext/dtext.cpp.rl"
 
 void StateMachine::dstack_push(element_t element) {
   dstack.push_back(element);
@@ -492,7 +492,7 @@ DTextResult StateMachine::parse() {
 	( sm->act) = 0;
 	}
 
-#line 1158 "ext/dtext/dtext.cpp.rl"
+#line 1162 "ext/dtext/dtext.cpp.rl"
   
 #line 485 "ext/dtext/dtext.cpp"
 	{
@@ -1349,7 +1349,7 @@ tr0:
 	}
 	goto st735;
 tr2:
-#line 742 "ext/dtext/dtext.cpp.rl"
+#line 746 "ext/dtext/dtext.cpp.rl"
 	{{( sm->p) = ((( sm->te)))-1;}{
     g_debug("block char: %c", (*( sm->p)));
     ( sm->p)--;
@@ -1374,7 +1374,7 @@ tr2:
   }}
 	goto st735;
 tr16:
-#line 680 "ext/dtext/dtext.cpp.rl"
+#line 684 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p)+1;{
     g_debug("block [/spoiler]");
     dstack_close_before_block();
@@ -1387,17 +1387,19 @@ tr16:
 tr47:
 #line 93 "ext/dtext/dtext.cpp.rl"
 	{ a2 = p; }
-#line 663 "ext/dtext/dtext.cpp.rl"
+#line 665 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p)+1;{
     dstack_close_leaf_blocks();
     dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-quote-color\" style=\"border-left-color:");
-    if(a1[0] == '#') {
-      append("#");
-      append_uri_escaped({ a1 + 1, a2 });
-    } else {
-      append_uri_escaped({ a1, a2 });
+    if (!options.f_inline) {
+      if(a1[0] == '#') {
+        append("#");
+        append_uri_escaped({ a1 + 1, a2 });
+      } else {
+        append_uri_escaped({ a1, a2 });
+      }
+      append("\">");
     }
-    append("\">");
   }}
 	goto st735;
 tr53:
@@ -1407,12 +1409,14 @@ tr53:
 	{( sm->te) = ( sm->p)+1;{
     dstack_close_leaf_blocks();
     dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-sidebar-colored-");
-    append_uri_escaped({ a1, a2 });
-    append("\">");
+    if (!options.f_inline) {
+      append_uri_escaped({ a1, a2 });
+      append("\">");
+    }
   }}
 	goto st735;
 tr177:
-#line 713 "ext/dtext/dtext.cpp.rl"
+#line 717 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p)+1;{
     dstack_close_leaf_blocks();
     dstack_open_block(BLOCK_TABLE, "<table class=\"striped\">");
@@ -1432,7 +1436,7 @@ tr177:
   }}
 	goto st735;
 tr809:
-#line 742 "ext/dtext/dtext.cpp.rl"
+#line 746 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p)+1;{
     g_debug("block char: %c", (*( sm->p)));
     ( sm->p)--;
@@ -1457,7 +1461,7 @@ tr809:
   }}
 	goto st735;
 tr816:
-#line 742 "ext/dtext/dtext.cpp.rl"
+#line 746 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p);( sm->p)--;{
     g_debug("block char: %c", (*( sm->p)));
     ( sm->p)--;
@@ -1484,7 +1488,7 @@ tr816:
 tr817:
 #line 95 "ext/dtext/dtext.cpp.rl"
 	{ b2 = p; }
-#line 719 "ext/dtext/dtext.cpp.rl"
+#line 723 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p);( sm->p)--;{
     g_debug("block list");
     dstack_open_list(a2 - a1);
@@ -1532,7 +1536,7 @@ tr820:
   }}
 	goto st735;
 tr827:
-#line 689 "ext/dtext/dtext.cpp.rl"
+#line 693 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p);( sm->p)--;{
     dstack_close_leaf_blocks();
     dstack_open_block(BLOCK_CODE, "<pre>");
@@ -1559,33 +1563,33 @@ tr828:
   }}
 	goto st735;
 tr829:
-#line 708 "ext/dtext/dtext.cpp.rl"
+#line 712 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p);( sm->p)--;{
     g_debug("block expanded [section=]");
     append_section({ a1, a2 }, true);
   }}
 	goto st735;
 tr831:
-#line 699 "ext/dtext/dtext.cpp.rl"
+#line 703 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p);( sm->p)--;{
     append_section({}, true);
   }}
 	goto st735;
 tr832:
-#line 703 "ext/dtext/dtext.cpp.rl"
+#line 707 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p);( sm->p)--;{
     g_debug("block [section=]");
     append_section({ a1, a2 }, false);
   }}
 	goto st735;
 tr834:
-#line 695 "ext/dtext/dtext.cpp.rl"
+#line 699 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p);( sm->p)--;{
     append_section({}, false);
   }}
 	goto st735;
 tr835:
-#line 675 "ext/dtext/dtext.cpp.rl"
+#line 679 "ext/dtext/dtext.cpp.rl"
 	{( sm->te) = ( sm->p);( sm->p)--;{
     dstack_close_leaf_blocks();
     dstack_open_block(BLOCK_SPOILER, "<div class=\"spoiler\">");
@@ -1599,7 +1603,7 @@ st735:
 case 735:
 #line 1 "NONE"
 	{( sm->ts) = ( sm->p);}
-#line 1567 "ext/dtext/dtext.cpp"
+#line 1571 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 10: goto tr810;
 		case 13: goto st737;
@@ -1612,20 +1616,20 @@ case 735:
 tr1:
 #line 1 "NONE"
 	{( sm->te) = ( sm->p)+1;}
-#line 726 "ext/dtext/dtext.cpp.rl"
+#line 730 "ext/dtext/dtext.cpp.rl"
 	{( sm->act) = 110;}
 	goto st736;
 tr810:
 #line 1 "NONE"
 	{( sm->te) = ( sm->p)+1;}
-#line 738 "ext/dtext/dtext.cpp.rl"
+#line 742 "ext/dtext/dtext.cpp.rl"
 	{( sm->act) = 111;}
 	goto st736;
 st736:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof736;
 case 736:
-#line 1588 "ext/dtext/dtext.cpp"
+#line 1592 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 10: goto tr1;
 		case 13: goto st0;
@@ -1655,7 +1659,7 @@ st738:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof738;
 case 738:
-#line 1615 "ext/dtext/dtext.cpp"
+#line 1619 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 9: goto tr5;
 		case 32: goto tr5;
@@ -1670,7 +1674,7 @@ st1:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof1;
 case 1:
-#line 1628 "ext/dtext/dtext.cpp"
+#line 1632 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 9: goto tr4;
 		case 10: goto tr2;
@@ -1686,7 +1690,7 @@ st739:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof739;
 case 739:
-#line 1642 "ext/dtext/dtext.cpp"
+#line 1646 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 10: goto tr817;
 		case 13: goto tr817;
@@ -1700,7 +1704,7 @@ st740:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof740;
 case 740:
-#line 1654 "ext/dtext/dtext.cpp"
+#line 1658 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 9: goto tr4;
 		case 10: goto tr817;
@@ -1726,7 +1730,7 @@ st741:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof741;
 case 741:
-#line 1678 "ext/dtext/dtext.cpp"
+#line 1682 "ext/dtext/dtext.cpp"
 	if ( 49 <= (*( sm->p)) && (*( sm->p)) <= 54 )
 		goto tr819;
 	goto tr816;
@@ -1738,7 +1742,7 @@ st3:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof3;
 case 3:
-#line 1688 "ext/dtext/dtext.cpp"
+#line 1692 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 46 )
 		goto tr7;
 	goto tr2;
@@ -1750,7 +1754,7 @@ st742:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof742;
 case 742:
-#line 1698 "ext/dtext/dtext.cpp"
+#line 1702 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 9: goto st742;
 		case 32: goto st742;
@@ -1764,7 +1768,7 @@ st743:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof743;
 case 743:
-#line 1710 "ext/dtext/dtext.cpp"
+#line 1714 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 47: goto st4;
 		case 67: goto st13;
@@ -1977,7 +1981,7 @@ st23:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof23;
 case 23:
-#line 1921 "ext/dtext/dtext.cpp"
+#line 1925 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) < 65 ) {
 		if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 			goto st24;
@@ -2073,7 +2077,7 @@ st30:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof30;
 case 30:
-#line 2015 "ext/dtext/dtext.cpp"
+#line 2019 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 82: goto st31;
 		case 114: goto st31;
@@ -2131,7 +2135,7 @@ st36:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof36;
 case 36:
-#line 2071 "ext/dtext/dtext.cpp"
+#line 2075 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 72: goto st37;
 		case 79: goto st44;
@@ -2332,7 +2336,7 @@ st57:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof57;
 case 57:
-#line 2270 "ext/dtext/dtext.cpp"
+#line 2274 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st58;
 		case 101: goto st58;
@@ -2392,7 +2396,7 @@ st63:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof63;
 case 63:
-#line 2328 "ext/dtext/dtext.cpp"
+#line 2332 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 78: goto st64;
 		case 110: goto st64;
@@ -2452,7 +2456,7 @@ st69:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof69;
 case 69:
-#line 2386 "ext/dtext/dtext.cpp"
+#line 2390 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 79: goto st70;
 		case 111: goto st70;
@@ -2485,7 +2489,7 @@ st72:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof72;
 case 72:
-#line 2417 "ext/dtext/dtext.cpp"
+#line 2421 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st73;
 		case 101: goto st73;
@@ -2517,7 +2521,7 @@ st75:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof75;
 case 75:
-#line 2447 "ext/dtext/dtext.cpp"
+#line 2451 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 80: goto st76;
 		case 112: goto st76;
@@ -2577,7 +2581,7 @@ st81:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof81;
 case 81:
-#line 2505 "ext/dtext/dtext.cpp"
+#line 2509 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 82: goto st31;
 		case 93: goto tr47;
@@ -2594,7 +2598,7 @@ st82:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof82;
 case 82:
-#line 2520 "ext/dtext/dtext.cpp"
+#line 2524 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 93 )
 		goto tr47;
 	if ( 97 <= (*( sm->p)) && (*( sm->p)) <= 122 )
@@ -2665,7 +2669,7 @@ st88:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof88;
 case 88:
-#line 2589 "ext/dtext/dtext.cpp"
+#line 2593 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 72: goto st37;
 		case 79: goto st44;
@@ -2926,7 +2930,7 @@ st109:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof109;
 case 109:
-#line 2848 "ext/dtext/dtext.cpp"
+#line 2852 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st58;
 		case 93: goto tr47;
@@ -3003,7 +3007,7 @@ st115:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof115;
 case 115:
-#line 2923 "ext/dtext/dtext.cpp"
+#line 2927 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 78: goto st64;
 		case 93: goto tr47;
@@ -3080,7 +3084,7 @@ st121:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof121;
 case 121:
-#line 2998 "ext/dtext/dtext.cpp"
+#line 3002 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 79: goto st70;
 		case 93: goto tr47;
@@ -3121,7 +3125,7 @@ st124:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof124;
 case 124:
-#line 3037 "ext/dtext/dtext.cpp"
+#line 3041 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st73;
 		case 93: goto tr47;
@@ -3162,7 +3166,7 @@ st127:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof127;
 case 127:
-#line 3076 "ext/dtext/dtext.cpp"
+#line 3080 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 80: goto st76;
 		case 93: goto tr47;
@@ -3402,7 +3406,7 @@ st150:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof150;
 case 150:
-#line 3314 "ext/dtext/dtext.cpp"
+#line 3318 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 93 )
 		goto tr162;
 	goto st150;
@@ -3414,7 +3418,7 @@ st746:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof746;
 case 746:
-#line 3324 "ext/dtext/dtext.cpp"
+#line 3328 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 32 )
 		goto st746;
 	if ( 9 <= (*( sm->p)) && (*( sm->p)) <= 13 )
@@ -3444,7 +3448,7 @@ st152:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof152;
 case 152:
-#line 3352 "ext/dtext/dtext.cpp"
+#line 3356 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 93 )
 		goto tr165;
 	goto st152;
@@ -3456,7 +3460,7 @@ st748:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof748;
 case 748:
-#line 3362 "ext/dtext/dtext.cpp"
+#line 3366 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 32 )
 		goto st748;
 	if ( 9 <= (*( sm->p)) && (*( sm->p)) <= 13 )
@@ -3677,7 +3681,7 @@ st751:
 case 751:
 #line 1 "NONE"
 	{( sm->ts) = ( sm->p);}
-#line 3565 "ext/dtext/dtext.cpp"
+#line 3569 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 91 )
 		goto tr837;
 	goto tr836;
@@ -3689,7 +3693,7 @@ st752:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof752;
 case 752:
-#line 3575 "ext/dtext/dtext.cpp"
+#line 3579 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 47: goto st165;
 		case 66: goto st173;
@@ -4499,7 +4503,7 @@ st753:
 case 753:
 #line 1 "NONE"
 	{( sm->ts) = ( sm->p);}
-#line 4276 "ext/dtext/dtext.cpp"
+#line 4280 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 10: goto tr845;
 		case 13: goto st761;
@@ -4549,7 +4553,7 @@ st754:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof754;
 case 754:
-#line 4323 "ext/dtext/dtext.cpp"
+#line 4327 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 10: goto tr202;
 		case 13: goto st180;
@@ -4569,7 +4573,7 @@ st755:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof755;
 case 755:
-#line 4340 "ext/dtext/dtext.cpp"
+#line 4344 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 10: goto tr202;
 		case 13: goto st180;
@@ -4696,7 +4700,7 @@ st193:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof193;
 case 193:
-#line 4465 "ext/dtext/dtext.cpp"
+#line 4469 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 9: goto tr218;
 		case 32: goto tr218;
@@ -4711,7 +4715,7 @@ st194:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof194;
 case 194:
-#line 4478 "ext/dtext/dtext.cpp"
+#line 4482 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 9: goto tr221;
 		case 10: goto tr217;
@@ -4727,7 +4731,7 @@ st756:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof756;
 case 756:
-#line 4492 "ext/dtext/dtext.cpp"
+#line 4496 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 10: goto tr874;
 		case 13: goto tr874;
@@ -4741,7 +4745,7 @@ st757:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof757;
 case 757:
-#line 4504 "ext/dtext/dtext.cpp"
+#line 4508 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 9: goto tr221;
 		case 10: goto tr874;
@@ -4764,7 +4768,7 @@ st196:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof196;
 case 196:
-#line 4525 "ext/dtext/dtext.cpp"
+#line 4529 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 46 )
 		goto tr223;
 	goto tr217;
@@ -4776,7 +4780,7 @@ st758:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof758;
 case 758:
-#line 4535 "ext/dtext/dtext.cpp"
+#line 4539 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 9: goto st758;
 		case 32: goto st758;
@@ -4955,7 +4959,7 @@ st762:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof762;
 case 762:
-#line 4710 "ext/dtext/dtext.cpp"
+#line 4714 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 34 )
 		goto tr881;
 	goto tr882;
@@ -4967,7 +4971,7 @@ st211:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof211;
 case 211:
-#line 4720 "ext/dtext/dtext.cpp"
+#line 4724 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 34 )
 		goto tr241;
 	goto st211;
@@ -4979,7 +4983,7 @@ st212:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof212;
 case 212:
-#line 4730 "ext/dtext/dtext.cpp"
+#line 4734 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 58 )
 		goto st213;
 	goto tr239;
@@ -5003,7 +5007,7 @@ st214:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof214;
 case 214:
-#line 4752 "ext/dtext/dtext.cpp"
+#line 4756 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 32 )
 		goto tr239;
 	if ( 9 <= (*( sm->p)) && (*( sm->p)) <= 13 )
@@ -5026,7 +5030,7 @@ st215:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof215;
 case 215:
-#line 4773 "ext/dtext/dtext.cpp"
+#line 4777 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 84: goto st216;
 		case 116: goto st216;
@@ -5100,7 +5104,7 @@ st223:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof223;
 case 223:
-#line 4845 "ext/dtext/dtext.cpp"
+#line 4849 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 32 )
 		goto tr239;
 	if ( 9 <= (*( sm->p)) && (*( sm->p)) <= 13 )
@@ -5125,7 +5129,7 @@ st225:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof225;
 case 225:
-#line 4868 "ext/dtext/dtext.cpp"
+#line 4872 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 84: goto st226;
 		case 116: goto st226;
@@ -5188,7 +5192,7 @@ st764:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof764;
 case 764:
-#line 4929 "ext/dtext/dtext.cpp"
+#line 4933 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 72: goto tr884;
 		case 104: goto tr884;
@@ -5202,7 +5206,7 @@ st232:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof232;
 case 232:
-#line 4941 "ext/dtext/dtext.cpp"
+#line 4945 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 84: goto st233;
 		case 116: goto st233;
@@ -5285,7 +5289,7 @@ st765:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof765;
 case 765:
-#line 5022 "ext/dtext/dtext.cpp"
+#line 5026 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 76: goto st241;
 		case 82: goto st247;
@@ -5349,7 +5353,7 @@ st766:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof766;
 case 766:
-#line 5084 "ext/dtext/dtext.cpp"
+#line 5088 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st766;
 	goto tr887;
@@ -5418,7 +5422,7 @@ st767:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof767;
 case 767:
-#line 5151 "ext/dtext/dtext.cpp"
+#line 5155 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st767;
 	goto tr889;
@@ -5430,7 +5434,7 @@ st768:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof768;
 case 768:
-#line 5161 "ext/dtext/dtext.cpp"
+#line 5165 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 65: goto st254;
 		case 76: goto st258;
@@ -5478,7 +5482,7 @@ st769:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof769;
 case 769:
-#line 5207 "ext/dtext/dtext.cpp"
+#line 5211 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st769;
 	goto tr894;
@@ -5529,7 +5533,7 @@ st770:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof770;
 case 770:
-#line 5256 "ext/dtext/dtext.cpp"
+#line 5260 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st770;
 	goto tr896;
@@ -5571,7 +5575,7 @@ st771:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof771;
 case 771:
-#line 5296 "ext/dtext/dtext.cpp"
+#line 5300 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st771;
 	goto tr898;
@@ -5583,7 +5587,7 @@ st772:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof772;
 case 772:
-#line 5306 "ext/dtext/dtext.cpp"
+#line 5310 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 79: goto st267;
 		case 111: goto st267;
@@ -5663,7 +5667,7 @@ st773:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof773;
 case 773:
-#line 5384 "ext/dtext/dtext.cpp"
+#line 5388 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st773;
 	goto tr901;
@@ -5675,7 +5679,7 @@ st774:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof774;
 case 774:
-#line 5394 "ext/dtext/dtext.cpp"
+#line 5398 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 76: goto st275;
 		case 79: goto st280;
@@ -5730,7 +5734,7 @@ st775:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof775;
 case 775:
-#line 5447 "ext/dtext/dtext.cpp"
+#line 5451 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st775;
 	goto tr905;
@@ -5790,7 +5794,7 @@ st776:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof776;
 case 776:
-#line 5505 "ext/dtext/dtext.cpp"
+#line 5509 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st776;
 	goto tr907;
@@ -5802,7 +5806,7 @@ st777:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof777;
 case 777:
-#line 5515 "ext/dtext/dtext.cpp"
+#line 5519 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 84: goto st286;
 		case 116: goto st286;
@@ -5883,7 +5887,7 @@ st779:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof779;
 case 779:
-#line 5594 "ext/dtext/dtext.cpp"
+#line 5598 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 77: goto st293;
 		case 109: goto st293;
@@ -5999,7 +6003,7 @@ st780:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof780;
 case 780:
-#line 5708 "ext/dtext/dtext.cpp"
+#line 5712 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st780;
 	goto tr912;
@@ -6011,7 +6015,7 @@ st781:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof781;
 case 781:
-#line 5718 "ext/dtext/dtext.cpp"
+#line 5722 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 79: goto st305;
 		case 111: goto st305;
@@ -6116,7 +6120,7 @@ st782:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof782;
 case 782:
-#line 5821 "ext/dtext/dtext.cpp"
+#line 5825 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st782;
 	goto tr915;
@@ -6128,7 +6132,7 @@ st783:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof783;
 case 783:
-#line 5831 "ext/dtext/dtext.cpp"
+#line 5835 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 79: goto st316;
 		case 111: goto st316;
@@ -6181,7 +6185,7 @@ st784:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof784;
 case 784:
-#line 5882 "ext/dtext/dtext.cpp"
+#line 5886 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st784;
 	goto tr918;
@@ -6193,7 +6197,7 @@ st785:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof785;
 case 785:
-#line 5892 "ext/dtext/dtext.cpp"
+#line 5896 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 79: goto st321;
 		case 111: goto st321;
@@ -6248,7 +6252,7 @@ st786:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof786;
 case 786:
-#line 5945 "ext/dtext/dtext.cpp"
+#line 5949 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st786;
 	goto tr921;
@@ -6293,7 +6297,7 @@ st787:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof787;
 case 787:
-#line 5988 "ext/dtext/dtext.cpp"
+#line 5992 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st787;
 	goto tr923;
@@ -6380,7 +6384,7 @@ st788:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof788;
 case 788:
-#line 6073 "ext/dtext/dtext.cpp"
+#line 6077 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st788;
 	goto tr925;
@@ -6392,7 +6396,7 @@ st789:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof789;
 case 789:
-#line 6083 "ext/dtext/dtext.cpp"
+#line 6087 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st339;
 		case 101: goto st339;
@@ -6463,7 +6467,7 @@ st790:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof790;
 case 790:
-#line 6152 "ext/dtext/dtext.cpp"
+#line 6156 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st790;
 	goto tr928;
@@ -6475,7 +6479,7 @@ st791:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof791;
 case 791:
-#line 6162 "ext/dtext/dtext.cpp"
+#line 6166 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st346;
 		case 101: goto st346;
@@ -6519,7 +6523,7 @@ st792:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof792;
 case 792:
-#line 6204 "ext/dtext/dtext.cpp"
+#line 6208 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st792;
 	goto tr931;
@@ -6531,7 +6535,7 @@ st793:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof793;
 case 793:
-#line 6214 "ext/dtext/dtext.cpp"
+#line 6218 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 65: goto st350;
 		case 72: goto st368;
@@ -6639,7 +6643,7 @@ st794:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof794;
 case 794:
-#line 6320 "ext/dtext/dtext.cpp"
+#line 6324 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st794;
 	goto tr937;
@@ -6767,7 +6771,7 @@ st795:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof795;
 case 795:
-#line 6446 "ext/dtext/dtext.cpp"
+#line 6450 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st795;
 	goto tr939;
@@ -6836,7 +6840,7 @@ st796:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof796;
 case 796:
-#line 6513 "ext/dtext/dtext.cpp"
+#line 6517 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st796;
 	goto tr941;
@@ -6896,7 +6900,7 @@ st797:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof797;
 case 797:
-#line 6571 "ext/dtext/dtext.cpp"
+#line 6575 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st797;
 	goto tr943;
@@ -6908,7 +6912,7 @@ st798:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof798;
 case 798:
-#line 6581 "ext/dtext/dtext.cpp"
+#line 6585 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 83: goto st387;
 		case 115: goto st387;
@@ -6961,7 +6965,7 @@ st799:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof799;
 case 799:
-#line 6632 "ext/dtext/dtext.cpp"
+#line 6636 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st799;
 	goto tr946;
@@ -6973,7 +6977,7 @@ st800:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof800;
 case 800:
-#line 6642 "ext/dtext/dtext.cpp"
+#line 6646 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 73: goto st392;
 		case 105: goto st392;
@@ -7026,7 +7030,7 @@ st801:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof801;
 case 801:
-#line 6693 "ext/dtext/dtext.cpp"
+#line 6697 "ext/dtext/dtext.cpp"
 	if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 		goto st801;
 	goto tr949;
@@ -7040,7 +7044,7 @@ st802:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof802;
 case 802:
-#line 6704 "ext/dtext/dtext.cpp"
+#line 6708 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 35: goto st397;
 		case 47: goto st399;
@@ -7086,7 +7090,7 @@ st398:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof398;
 case 398:
-#line 6748 "ext/dtext/dtext.cpp"
+#line 6752 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 45: goto st398;
 		case 93: goto tr434;
@@ -7415,7 +7419,7 @@ st429:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof429;
 case 429:
-#line 7075 "ext/dtext/dtext.cpp"
+#line 7079 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) < 65 ) {
 		if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 			goto st430;
@@ -7511,7 +7515,7 @@ st436:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof436;
 case 436:
-#line 7169 "ext/dtext/dtext.cpp"
+#line 7173 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 82: goto st437;
 		case 114: goto st437;
@@ -7569,7 +7573,7 @@ st442:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof442;
 case 442:
-#line 7225 "ext/dtext/dtext.cpp"
+#line 7229 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 72: goto st443;
 		case 79: goto st450;
@@ -7770,7 +7774,7 @@ st463:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof463;
 case 463:
-#line 7424 "ext/dtext/dtext.cpp"
+#line 7428 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st464;
 		case 101: goto st464;
@@ -7830,7 +7834,7 @@ st469:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof469;
 case 469:
-#line 7482 "ext/dtext/dtext.cpp"
+#line 7486 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 78: goto st470;
 		case 110: goto st470;
@@ -7890,7 +7894,7 @@ st475:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof475;
 case 475:
-#line 7540 "ext/dtext/dtext.cpp"
+#line 7544 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 79: goto st476;
 		case 111: goto st476;
@@ -7923,7 +7927,7 @@ st478:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof478;
 case 478:
-#line 7571 "ext/dtext/dtext.cpp"
+#line 7575 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st479;
 		case 101: goto st479;
@@ -7955,7 +7959,7 @@ st481:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof481;
 case 481:
-#line 7601 "ext/dtext/dtext.cpp"
+#line 7605 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 80: goto st482;
 		case 112: goto st482;
@@ -8015,7 +8019,7 @@ st487:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof487;
 case 487:
-#line 7659 "ext/dtext/dtext.cpp"
+#line 7663 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 82: goto st437;
 		case 93: goto tr494;
@@ -8032,7 +8036,7 @@ st488:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof488;
 case 488:
-#line 7674 "ext/dtext/dtext.cpp"
+#line 7678 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 93 )
 		goto tr494;
 	if ( 97 <= (*( sm->p)) && (*( sm->p)) <= 122 )
@@ -8103,7 +8107,7 @@ st494:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof494;
 case 494:
-#line 7743 "ext/dtext/dtext.cpp"
+#line 7747 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 72: goto st443;
 		case 79: goto st450;
@@ -8364,7 +8368,7 @@ st515:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof515;
 case 515:
-#line 8002 "ext/dtext/dtext.cpp"
+#line 8006 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st464;
 		case 93: goto tr494;
@@ -8441,7 +8445,7 @@ st521:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof521;
 case 521:
-#line 8077 "ext/dtext/dtext.cpp"
+#line 8081 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 78: goto st470;
 		case 93: goto tr494;
@@ -8518,7 +8522,7 @@ st527:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof527;
 case 527:
-#line 8152 "ext/dtext/dtext.cpp"
+#line 8156 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 79: goto st476;
 		case 93: goto tr494;
@@ -8559,7 +8563,7 @@ st530:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof530;
 case 530:
-#line 8191 "ext/dtext/dtext.cpp"
+#line 8195 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st479;
 		case 93: goto tr494;
@@ -8600,7 +8604,7 @@ st533:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof533;
 case 533:
-#line 8230 "ext/dtext/dtext.cpp"
+#line 8234 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 80: goto st482;
 		case 93: goto tr494;
@@ -8753,7 +8757,7 @@ st546:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof546;
 case 546:
-#line 8381 "ext/dtext/dtext.cpp"
+#line 8385 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) < 65 ) {
 		if ( 48 <= (*( sm->p)) && (*( sm->p)) <= 57 )
 			goto st547;
@@ -8849,7 +8853,7 @@ st553:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof553;
 case 553:
-#line 8475 "ext/dtext/dtext.cpp"
+#line 8479 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 82: goto st554;
 		case 114: goto st554;
@@ -8907,7 +8911,7 @@ st559:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof559;
 case 559:
-#line 8531 "ext/dtext/dtext.cpp"
+#line 8535 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 72: goto st560;
 		case 79: goto st567;
@@ -9108,7 +9112,7 @@ st580:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof580;
 case 580:
-#line 8730 "ext/dtext/dtext.cpp"
+#line 8734 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st581;
 		case 101: goto st581;
@@ -9168,7 +9172,7 @@ st586:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof586;
 case 586:
-#line 8788 "ext/dtext/dtext.cpp"
+#line 8792 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 78: goto st587;
 		case 110: goto st587;
@@ -9228,7 +9232,7 @@ st592:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof592;
 case 592:
-#line 8846 "ext/dtext/dtext.cpp"
+#line 8850 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 79: goto st593;
 		case 111: goto st593;
@@ -9261,7 +9265,7 @@ st595:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof595;
 case 595:
-#line 8877 "ext/dtext/dtext.cpp"
+#line 8881 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st596;
 		case 101: goto st596;
@@ -9293,7 +9297,7 @@ st598:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof598;
 case 598:
-#line 8907 "ext/dtext/dtext.cpp"
+#line 8911 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 80: goto st599;
 		case 112: goto st599;
@@ -9353,7 +9357,7 @@ st604:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof604;
 case 604:
-#line 8965 "ext/dtext/dtext.cpp"
+#line 8969 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 82: goto st554;
 		case 93: goto tr614;
@@ -9370,7 +9374,7 @@ st605:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof605;
 case 605:
-#line 8980 "ext/dtext/dtext.cpp"
+#line 8984 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 93 )
 		goto tr614;
 	if ( 97 <= (*( sm->p)) && (*( sm->p)) <= 122 )
@@ -9441,7 +9445,7 @@ st611:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof611;
 case 611:
-#line 9049 "ext/dtext/dtext.cpp"
+#line 9053 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 72: goto st560;
 		case 79: goto st567;
@@ -9702,7 +9706,7 @@ st632:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof632;
 case 632:
-#line 9308 "ext/dtext/dtext.cpp"
+#line 9312 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st581;
 		case 93: goto tr614;
@@ -9779,7 +9783,7 @@ st638:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof638;
 case 638:
-#line 9383 "ext/dtext/dtext.cpp"
+#line 9387 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 78: goto st587;
 		case 93: goto tr614;
@@ -9856,7 +9860,7 @@ st644:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof644;
 case 644:
-#line 9458 "ext/dtext/dtext.cpp"
+#line 9462 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 79: goto st593;
 		case 93: goto tr614;
@@ -9897,7 +9901,7 @@ st647:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof647;
 case 647:
-#line 9497 "ext/dtext/dtext.cpp"
+#line 9501 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 69: goto st596;
 		case 93: goto tr614;
@@ -9938,7 +9942,7 @@ st650:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof650;
 case 650:
-#line 9536 "ext/dtext/dtext.cpp"
+#line 9540 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 80: goto st599;
 		case 93: goto tr614;
@@ -10172,7 +10176,7 @@ st673:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof673;
 case 673:
-#line 9768 "ext/dtext/dtext.cpp"
+#line 9772 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 93 )
 		goto tr729;
 	goto st673;
@@ -10330,7 +10334,7 @@ st691:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof691;
 case 691:
-#line 9924 "ext/dtext/dtext.cpp"
+#line 9928 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 93: goto tr750;
 		case 124: goto tr751;
@@ -10344,7 +10348,7 @@ st692:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof692;
 case 692:
-#line 9936 "ext/dtext/dtext.cpp"
+#line 9940 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 93 )
 		goto tr752;
 	goto tr239;
@@ -10356,7 +10360,7 @@ st693:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof693;
 case 693:
-#line 9946 "ext/dtext/dtext.cpp"
+#line 9950 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 93: goto tr239;
 		case 124: goto tr239;
@@ -10370,7 +10374,7 @@ st694:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof694;
 case 694:
-#line 9958 "ext/dtext/dtext.cpp"
+#line 9962 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 93: goto tr755;
 		case 124: goto tr239;
@@ -10384,7 +10388,7 @@ st695:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof695;
 case 695:
-#line 9970 "ext/dtext/dtext.cpp"
+#line 9974 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 93 )
 		goto tr756;
 	goto tr239;
@@ -10396,7 +10400,7 @@ st696:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof696;
 case 696:
-#line 9980 "ext/dtext/dtext.cpp"
+#line 9984 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 93: goto tr750;
 		case 124: goto tr239;
@@ -10417,7 +10421,7 @@ st806:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof806;
 case 806:
-#line 9999 "ext/dtext/dtext.cpp"
+#line 10003 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 123 )
 		goto st697;
 	goto tr881;
@@ -10438,7 +10442,7 @@ st698:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof698;
 case 698:
-#line 10018 "ext/dtext/dtext.cpp"
+#line 10022 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 124: goto tr761;
 		case 125: goto tr762;
@@ -10452,7 +10456,7 @@ st699:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof699;
 case 699:
-#line 10030 "ext/dtext/dtext.cpp"
+#line 10034 "ext/dtext/dtext.cpp"
 	if ( 124 <= (*( sm->p)) && (*( sm->p)) <= 125 )
 		goto tr239;
 	goto tr763;
@@ -10464,7 +10468,7 @@ st700:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof700;
 case 700:
-#line 10040 "ext/dtext/dtext.cpp"
+#line 10044 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 124: goto tr239;
 		case 125: goto tr765;
@@ -10478,7 +10482,7 @@ st701:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof701;
 case 701:
-#line 10052 "ext/dtext/dtext.cpp"
+#line 10056 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 125 )
 		goto tr766;
 	goto tr239;
@@ -10490,7 +10494,7 @@ st702:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof702;
 case 702:
-#line 10062 "ext/dtext/dtext.cpp"
+#line 10066 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 125 )
 		goto tr767;
 	goto tr239;
@@ -10502,7 +10506,7 @@ st703:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof703;
 case 703:
-#line 10072 "ext/dtext/dtext.cpp"
+#line 10076 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 124: goto tr239;
 		case 125: goto tr762;
@@ -10541,7 +10545,7 @@ st807:
 case 807:
 #line 1 "NONE"
 	{( sm->ts) = ( sm->p);}
-#line 10104 "ext/dtext/dtext.cpp"
+#line 10108 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 92: goto st808;
 		case 96: goto tr967;
@@ -10591,7 +10595,7 @@ st809:
 case 809:
 #line 1 "NONE"
 	{( sm->ts) = ( sm->p);}
-#line 10147 "ext/dtext/dtext.cpp"
+#line 10151 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 91 )
 		goto tr971;
 	goto tr970;
@@ -10603,7 +10607,7 @@ st810:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof810;
 case 810:
-#line 10157 "ext/dtext/dtext.cpp"
+#line 10161 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 47 )
 		goto st704;
 	goto tr972;
@@ -10752,7 +10756,7 @@ st811:
 case 811:
 #line 1 "NONE"
 	{( sm->ts) = ( sm->p);}
-#line 10291 "ext/dtext/dtext.cpp"
+#line 10295 "ext/dtext/dtext.cpp"
 	if ( (*( sm->p)) == 91 )
 		goto tr975;
 	goto tr974;
@@ -10764,7 +10768,7 @@ st812:
 	if ( ++( sm->p) == ( sm->pe) )
 		goto _test_eof812;
 case 812:
-#line 10301 "ext/dtext/dtext.cpp"
+#line 10305 "ext/dtext/dtext.cpp"
 	switch( (*( sm->p)) ) {
 		case 47: goto st709;
 		case 84: goto st724;
@@ -12633,7 +12637,7 @@ case 734:
 
 	}
 
-#line 1159 "ext/dtext/dtext.cpp.rl"
+#line 1163 "ext/dtext/dtext.cpp.rl"
 
   sm->dstack_close_all();
 
