@@ -656,20 +656,24 @@ main := |*
   quote_open_colored_typed => {
     dstack_close_leaf_blocks();
     dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-sidebar-colored-");
-    append_uri_escaped({ a1, a2 });
-    append("\">");
+    if (!options.f_inline) {
+      append_uri_escaped({ a1, a2 });
+      append("\">");
+    }
   };
 
   quote_open_colored => {
     dstack_close_leaf_blocks();
     dstack_open_block(BLOCK_QUOTE, "<blockquote class=\"dtext-quote-color\" style=\"border-left-color:");
-    if(a1[0] == '#') {
-      append("#");
-      append_uri_escaped({ a1 + 1, a2 });
-    } else {
-      append_uri_escaped({ a1, a2 });
+    if (!options.f_inline) {
+      if(a1[0] == '#') {
+        append("#");
+        append_uri_escaped({ a1 + 1, a2 });
+      } else {
+        append_uri_escaped({ a1, a2 });
+      }
+      append("\">");
     }
-    append("\">");
   };
 
   spoilers_open space* => {
