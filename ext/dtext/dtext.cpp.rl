@@ -165,6 +165,7 @@ set_id = 'set #'i id;
 blip_id = 'blip #'i id;
 takedown_id = 'take'i ' 'i? 'down 'i 'request 'i? '#'i id;
 ticket_id = 'ticket #'i id;
+appeal_id = 'appeal #'i id;
 
 ws = ' ' | '\t';
 nonperiod = graph - ('.' | '"');
@@ -281,6 +282,7 @@ inline := |*
   set_id => { append_id_link("set", "set", "/post_sets/"); };
   blip_id => { append_id_link("blip", "blip", "/blips/"); };
   ticket_id => { append_id_link("ticket", "ticket", "/tickets/"); };
+  appeal_id => { append_id_link("appeal", "appeal", "/appeals/"); };
   takedown_id => { append_id_link("takedown", "takedown", "/takedowns/"); };
 
   basic_post_search_link => {
