@@ -33,6 +33,7 @@ class DTextIDLinkTest < Minitest::Test
     assert_parse_id_link("dtext-takedown-id-link", "/takedowns/1234", "takedown request #1234", display: "takedown #1234")
     assert_parse_id_link("dtext-takedown-id-link", "/takedowns/1234", "take down request #1234", display: "takedown #1234")
     assert_parse_id_link("dtext-ticket-id-link", "/tickets/1234", "ticket #1234")
+    assert_parse_id_link("dtext-appeal-id-link", "/appeals/1234", "appeal #1234")
     assert_parse_id_link("dtext-wiki-page-id-link", "/wiki_pages/1234", "wiki #1234")
   end
 
