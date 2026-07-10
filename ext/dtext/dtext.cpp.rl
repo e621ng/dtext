@@ -123,15 +123,27 @@ spoilers_open = '[spoiler'i 's'i? ']';
 spoilers_close = '[/spoiler'i 's'i? ']';
 
 color_name = (
+  # Tag Categories
     'gen'i ('eral'i)?
   | 'art'i ('ist'i)?
+  | 'dir'i ('ect'i ('or'i)?)?
   | 'cont'i ('ributor'i)?
   | 'copy'i ('right'i)?
-  | 'char'i ('acter'i)?
+  | 'fr'i ('anc'i? ('hise'i)?)?
+  | 'ch'i ('ar'i ('acter'i)?)?
+  | 'oc'i
   | 'spec'i ('ies'i)?
   | 'inv'i ('alid'i)?
   | 'meta'i
   | 'lor'i ('e'i)?
+  # User Groups
+  | 'admin'i
+  | 'mod'i ('erator'i)?
+  | 'jan'i ('itor'i)?
+  | 'former'i ('-staff'i)?
+  | 'priv'i ('ileged'i)?
+  | 'member'i
+  | 'blocked'i
   );
 
 color_value = (([a-z]+ - color_name) | '#'i[0-9a-fA-F]{3,6});
