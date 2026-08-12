@@ -18,8 +18,11 @@ Gem::Specification.new do |spec|
 
   spec.files = [
     "lib/dtext.rb",
-    "lib/dtext/dtext.so",
     "lib/dtext/version.rb",
+    "ext/dtext/extconf.rb",
+    "ext/dtext/dtext.cpp",
+    "ext/dtext/dtext.h",
+    "ext/dtext/rb_dtext.cpp",
   ]
 
   spec.add_development_dependency(%q<minitest>, ["~> 5.10"])
