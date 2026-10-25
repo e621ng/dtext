@@ -144,6 +144,10 @@ color_name = (
   | 'priv'i ('ileged'i)?
   | 'member'i
   | 'blocked'i
+  # Ratings
+  | 'e'i ('x'i ('p'i ('licit'i)?))?
+  | 'q'i ('u'i ('est'i ('ion'i (able'i)?)?)?)?
+  | 's'i ('afe'i)?
   );
 
 color_value = (([a-z]+ - color_name) | '#'i[0-9a-fA-F]{3,6});
