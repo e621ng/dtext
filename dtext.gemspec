@@ -11,11 +11,15 @@ Gem::Specification.new do |spec|
   spec.homepage = "http://github.com/e621ng/dtext"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
+  spec.platform = Gem::Platform::RUBY
   spec.extensions = ["ext/dtext/extconf.rb"]
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
 
+  # Don't pack the dynamic library (.so), that will be done by
+  # `bundle exec rake native`. Pack sources so we always have a
+  # source gem available for platforms other than `x86_64-linux-musl`.
   spec.files = [
     "lib/dtext.rb",
     "lib/dtext/version.rb",

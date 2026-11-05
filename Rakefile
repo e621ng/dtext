@@ -12,7 +12,12 @@ rescue LoadError, Bundler::BundlerError => e
   exit 1
 end
 
-Rake::ExtensionTask.new "dtext" do |ext|
+spec = Gem::Specification.load("dtext.gemspec")
+Gem::PackageTask.new(spec) do |pkg|
+  # this can just be empty
+end
+
+Rake::ExtensionTask.new("dtext", spec) do |ext|
   # this goes here to ensure ragel runs *before* the extension is compiled.
   task :compile => ["ext/dtext/dtext.cpp", "ext/dtext/rb_dtext.cpp"]
   ext.lib_dir = "lib/dtext"
