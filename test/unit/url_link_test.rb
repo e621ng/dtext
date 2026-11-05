@@ -116,15 +116,16 @@ class DTextURLLinkTest < Minitest::Test
     assert_parse("<p>[#test.abc]</p>", "[#test.abc]")
   end
 
-# Boundary trimming must only read bytes inside the match: a truncated multibyte
-# sequence at the end of the input is left alone instead of being decoded from
-# whatever follows the buffer (E6SEC-306).
-def test_urls_with_truncated_utf8_tail
-  assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link\" href=\"http://ab\xE3\x80\">http://ab\xE3\x80</a></p>", "http://ab\xE3\x80".b)
-  assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link\" href=\"http://ab\xF0\">http://ab\xF0</a></p>", "http://ab\xF0".b)
-  assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link\" href=\"http://ab\x80\">http://ab\x80</a></p>", "http://ab\x80".b)
-  assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link dtext-external-link\" href=\"http://ab\xE3\x80\">t</a></p>", "\"t\":http://ab\xE3\x80".b)
-  assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link\" href=\"http://abあ\">http://abあ</a></p>", "http://abあ")
-  assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link\" href=\"http://test.com\">http://test.com</a>」</p>", "http://test.com」")
-end
+  # Boundary trimming must only read bytes inside the match: a truncated multibyte
+  # sequence at the end of the input is left alone instead of being decoded from
+  # whatever follows the buffer (E6SEC-306).
+  def test_urls_with_truncated_utf8_tail
+    assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link\" href=\"http://ab\xE3\x80\">http://ab\xE3\x80</a></p>", "http://ab\xE3\x80".b)
+    assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link\" href=\"http://ab\xF0\">http://ab\xF0</a></p>", "http://ab\xF0".b)
+    assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link\" href=\"http://ab\x80\">http://ab\x80</a></p>", "http://ab\x80".b)
+    assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link\" href=\"http://ab.\x80\">http://ab.\x80</a></p>", "http://ab.\x80".b)
+    assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link dtext-external-link\" href=\"http://ab\xE3\x80\">t</a></p>", "\"t\":http://ab\xE3\x80".b)
+    assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link\" href=\"http://abあ\">http://abあ</a></p>", "http://abあ")
+    assert_parse("<p><a rel=\"nofollow\" class=\"dtext-link\" href=\"http://test.com\">http://test.com</a>」</p>", "http://test.com」")
+  end
 end

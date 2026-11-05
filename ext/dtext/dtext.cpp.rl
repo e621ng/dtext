@@ -119,7 +119,7 @@ bracketed_textile_link = '"' nonquote+ >mark_a1 %mark_a2 '":[' (url | internal_u
 # body is still allowed.
 no_wiki_open = any* - (any* '[[' any*);
 no_search_open = any* - (any* '{{' any*);
-no_section_open = any* - (any* '[section'i any*);
+no_section_open = any* - (any* '[section'i (',expanded'i)? '=' any*);
 
 basic_wiki_link = '[[' ((nonbracket nonpipebracket*) & no_wiki_open) >mark_a1 %mark_a2 ']]';
 aliased_wiki_link = '[[' (nonpipebracket+ & no_wiki_open) >mark_a1 %mark_a2 '|' (nonpipebracket+ & no_wiki_open) >mark_b1 %mark_b2 ']]';
@@ -1112,8 +1112,8 @@ void StateMachine::dstack_close_list() {
 }
 
 // Decodes the UTF-8 character containing `c`, reading only bytes inside [begin, end).
-// Returns the code point and the address of the character's first byte. A truncated
-// or malformed sequence decodes to 0.
+// Returns the code point and the address of the character's first byte. A sequence
+// that is truncated, malformed, or does not end at `c` decodes to 0.
 static inline std::tuple<char32_t, const char*> get_utf8_char(const char* c, const char* begin, const char* end) {
   const unsigned char* p = reinterpret_cast<const unsigned char*>(c);
   const unsigned char* b = reinterpret_cast<const unsigned char*>(begin);
@@ -1143,8 +1143,12 @@ static inline std::tuple<char32_t, const char*> get_utf8_char(const char* c, con
     return { 0, lead };
   }
 
-  if (e - p < len) {
-    // Truncated sequence at the end of the input; the missing bytes are not ours to read.
+  const unsigned char* last = reinterpret_cast<const unsigned char*>(c);
+
+  if (last >= e || p + len - 1 != last) {
+    // Either the sequence is truncated by the end of the input (the missing bytes are
+    // not ours to read), or `c` is a stray continuation byte that does not complete the
+    // sequence started at `lead`. Neither is a well-formed character.
     return { 0, lead };
   }
 

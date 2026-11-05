@@ -53,17 +53,17 @@ class DTextWikiLinkTest < Minitest::Test
     assert_equal("invalid byte sequence in UTF-8", e.message)
   end
 
-def test_wiki_links_with_single_bracket_in_body
-  assert_parse('<p><a rel="nofollow" class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=a%5Bb">a[b</a></p>', "[[a[b]]")
-  assert_parse('<p><a rel="nofollow" class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=a%5Bb">t</a></p>', "[[a[b|t]]")
-  assert_parse('<p><a rel="nofollow" class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=%5Bfoo">[foo</a></p>', "[[[foo]]")
-end
+  def test_wiki_links_with_single_bracket_in_body
+    assert_parse('<p><a rel="nofollow" class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=a%5Bb">a[b</a></p>', "[[a[b]]")
+    assert_parse('<p><a rel="nofollow" class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=a%5Bb">t</a></p>', "[[a[b|t]]")
+    assert_parse('<p><a rel="nofollow" class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=%5Bfoo">[foo</a></p>', "[[[foo]]")
+  end
 
-# A wiki link body must not contain another opener; otherwise a run of "[" makes the
-# scanner quadratic (E6SEC-302).
-def test_wiki_links_with_nested_opener
-  assert_parse('<p>[[a<a rel="nofollow" class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=b">b</a></p>', "[[a[[b]]")
-  assert_parse('<p>[[a|t<a rel="nofollow" class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=u">u</a></p>', "[[a|t[[u]]")
-  assert_parse("<p>[[[[[[[[</p>", "[[[[[[[[")
-end
+  # A wiki link body must not contain another opener; otherwise a run of "[" makes the
+  # scanner quadratic (E6SEC-302).
+  def test_wiki_links_with_nested_opener
+    assert_parse('<p>[[a<a rel="nofollow" class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=b">b</a></p>', "[[a[[b]]")
+    assert_parse('<p>[[a|t<a rel="nofollow" class="dtext-link dtext-wiki-link" href="/wiki_pages/show_or_new?title=u">u</a></p>', "[[a|t[[u]]")
+    assert_parse("<p>[[[[[[[[</p>", "[[[[[[[[")
+  end
 end
