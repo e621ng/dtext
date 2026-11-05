@@ -1,6 +1,7 @@
 #ifndef DTEXT_H
 #define DTEXT_H
 
+#include <array>
 #include <string>
 #include <vector>
 #include <stdexcept>
@@ -120,6 +121,7 @@ private:
   std::string output;
   std::vector<int> stack;
   std::vector<element_t> dstack;
+  std::array<int, INLINE_CODE + 1> dstack_counts{};
 };
 
 #endif
