@@ -27,4 +27,16 @@ class DTextSearchLinkTest < Minitest::Test
   def test_inline_tags_aliased
     assert_parse('<p><a rel="nofollow" class="dtext-link dtext-post-search-link" href="/posts?tags=fox%20smile">Best Search</a></p>', "{{fox smile|Best Search}}")
   end
+
+def test_inline_tags_with_single_brace_in_body
+  assert_parse('<p><a rel="nofollow" class="dtext-link dtext-post-search-link" href="/posts?tags=a%7Bb">a{b</a></p>', "{{a{b}}")
+  assert_parse('<p><a rel="nofollow" class="dtext-link dtext-post-search-link" href="/posts?tags=%7Bfoo">{foo</a></p>', "{{{foo}}")
+end
+
+# A search link body must not contain another opener; otherwise a run of "{" makes the
+# scanner quadratic (E6SEC-302).
+def test_inline_tags_with_nested_opener
+  assert_parse('<p>{{a<a rel="nofollow" class="dtext-link dtext-post-search-link" href="/posts?tags=b">b</a></p>', "{{a{{b}}")
+  assert_parse("<p>{{{{{{{{</p>", "{{{{{{{{")
+end
 end

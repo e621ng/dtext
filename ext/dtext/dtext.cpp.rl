@@ -113,11 +113,19 @@ internal_url = [/#] ^space+;
 basic_textile_link = '"' nonquote+ >mark_a1 %mark_a2 '":' (url | internal_url) >mark_b1 %mark_b2;
 bracketed_textile_link = '"' nonquote+ >mark_a1 %mark_a2 '":[' (url | internal_url) >mark_b1 %mark_b2 :>> ']';
 
-basic_wiki_link = '[[' (nonbracket nonpipebracket*) >mark_a1 %mark_a2 ']]';
-aliased_wiki_link = '[[' nonpipebracket+ >mark_a1 %mark_a2 '|' nonpipebracket+ >mark_b1 %mark_b2 ']]';
+# A link or section body must not contain its own opener. Otherwise every opener in a
+# run like "[[[[[[" starts a new longest-match candidate that scans to the end of the
+# input before failing, which makes the scanner quadratic. A single '[' or '{' inside a
+# body is still allowed.
+no_wiki_open = any* - (any* '[[' any*);
+no_search_open = any* - (any* '{{' any*);
+no_section_open = any* - (any* '[section'i any*);
 
-basic_post_search_link = '{{' (noncurly nonpipecurly*) >mark_a1 %mark_a2 '}}';
-aliased_post_search_link = '{{' nonpipecurly+ >mark_a1 %mark_a2 '|' nonpipecurly+ >mark_b1 %mark_b2 '}}';
+basic_wiki_link = '[[' ((nonbracket nonpipebracket*) & no_wiki_open) >mark_a1 %mark_a2 ']]';
+aliased_wiki_link = '[[' (nonpipebracket+ & no_wiki_open) >mark_a1 %mark_a2 '|' (nonpipebracket+ & no_wiki_open) >mark_b1 %mark_b2 ']]';
+
+basic_post_search_link = '{{' ((noncurly nonpipecurly*) & no_search_open) >mark_a1 %mark_a2 '}}';
+aliased_post_search_link = '{{' (nonpipecurly+ & no_search_open) >mark_a1 %mark_a2 '|' (nonpipecurly+ & no_search_open) >mark_b1 %mark_b2 '}}';
 
 spoilers_open = '[spoiler'i 's'i? ']';
 spoilers_close = '[/spoiler'i 's'i? ']';
@@ -185,8 +193,8 @@ header = 'h'i [123456] >mark_a1 %mark_a2 '.' ws*;
 
 section_open = '[section]'i;
 section_open_expanded = '[section,expanded]'i;
-section_open_aliased = '[section='i (nonbracket+ >mark_a1 %mark_a2) ']';
-section_open_aliased_expanded = '[section,expanded='i (nonbracket+ >mark_a1 %mark_a2) ']';
+section_open_aliased = '[section='i ((nonbracket+ & no_section_open) >mark_a1 %mark_a2) ']';
+section_open_aliased_expanded = '[section,expanded='i ((nonbracket+ & no_section_open) >mark_a1 %mark_a2) ']';
 section_close = '[/section'i (']' when in_section);
 
 quote_open = '[quote]'i;
@@ -316,7 +324,7 @@ inline := |*
   basic_textile_link => {
     const char* match_end = b2;
     const char* url_start = b1;
-    const char* url_end = find_boundary_c(match_end - 1) + 1;
+    const char* url_end = find_boundary_c(match_end - 1, url_start, match_end) + 1;
 
     append_named_url({ url_start, url_end }, { a1, a2 });
 
@@ -332,7 +340,7 @@ inline := |*
   url => {
     const char* match_end = te;
     const char* url_start = ts;
-    const char* url_end = find_boundary_c(match_end - 1) + 1;
+    const char* url_end = find_boundary_c(match_end - 1, url_start, match_end) + 1;
 
     append_unnamed_url({ url_start, url_end });
 
@@ -775,6 +783,7 @@ main := |*
 
 void StateMachine::dstack_push(element_t element) {
   dstack.push_back(element);
+  dstack_counts[element]++;
 }
 
 element_t StateMachine::dstack_pop() {
@@ -784,6 +793,7 @@ element_t StateMachine::dstack_pop() {
   } else {
     auto element = dstack.back();
     dstack.pop_back();
+    dstack_counts[element]--;
     return element;
   }
 }
@@ -798,11 +808,11 @@ bool StateMachine::dstack_check(element_t expected_element) {
 
 // Return true if the given tag is currently open.
 bool StateMachine::dstack_is_open(element_t element) {
-  return std::find(dstack.begin(), dstack.end(), element) != dstack.end();
+  return dstack_counts[element] > 0;
 }
 
 int StateMachine::dstack_count(element_t element) {
-  return std::count(dstack.begin(), dstack.end(), element);
+  return dstack_counts[element];
 }
 
 void StateMachine::append(const std::string_view c) {
@@ -1101,39 +1111,60 @@ void StateMachine::dstack_close_list() {
   }
 }
 
-static inline std::tuple<char32_t, int> get_utf8_char(const char* c) {
+// Decodes the UTF-8 character containing `c`, reading only bytes inside [begin, end).
+// Returns the code point and the address of the character's first byte. A truncated
+// or malformed sequence decodes to 0.
+static inline std::tuple<char32_t, const char*> get_utf8_char(const char* c, const char* begin, const char* end) {
   const unsigned char* p = reinterpret_cast<const unsigned char*>(c);
+  const unsigned char* b = reinterpret_cast<const unsigned char*>(begin);
+  const unsigned char* e = reinterpret_cast<const unsigned char*>(end);
 
   // 0x10xxxxxx is a continuation byte; back up to the leading byte.
-  while ((p[0] >> 6) == 0b10) {
+  while (p > b && (p[0] >> 6) == 0b10) {
     p--;
   }
 
+  const char* lead = reinterpret_cast<const char*>(p);
+  int len;
+
   if (p[0] >> 7 == 0) {
     // 0x0xxxxxxx
-    return { p[0], 1 };
+    len = 1;
   } else if ((p[0] >> 5) == 0b110) {
     // 0x110xxxxx, 0x10xxxxxx
-    return { ((p[0] & 0b00011111) << 6) | (p[1] & 0b00111111), 2 };
+    len = 2;
   } else if ((p[0] >> 4) == 0b1110) {
     // 0x1110xxxx, 0x10xxxxxx, 0x10xxxxxx
-    return { ((p[0] & 0b00001111) << 12) | (p[1] & 0b00111111) << 6 | (p[2] & 0b00111111), 3 };
+    len = 3;
   } else if ((p[0] >> 3) == 0b11110) {
     // 0x11110xxx, 0x10xxxxxx, 0x10xxxxxx, 0x10xxxxxx
-    return { ((p[0] & 0b00000111) << 18) | (p[1] & 0b00111111) << 12 | (p[2] & 0b00111111) << 6 | (p[3] & 0b00111111), 4 };
+    len = 4;
   } else {
-    return { 0, 0 };
+    return { 0, lead };
+  }
+
+  if (e - p < len) {
+    // Truncated sequence at the end of the input; the missing bytes are not ours to read.
+    return { 0, lead };
+  }
+
+  switch (len) {
+    case 1:  return { p[0], lead };
+    case 2:  return { ((p[0] & 0b00011111) << 6) | (p[1] & 0b00111111), lead };
+    case 3:  return { ((p[0] & 0b00001111) << 12) | (p[1] & 0b00111111) << 6 | (p[2] & 0b00111111), lead };
+    default: return { ((p[0] & 0b00000111) << 18) | (p[1] & 0b00111111) << 12 | (p[2] & 0b00111111) << 6 | (p[3] & 0b00111111), lead };
   }
 }
 
-// Returns the preceding non-boundary character if `c` is a boundary character.
-// Otherwise, returns `c` if `c` is not a boundary character. Boundary characters
-// are trailing punctuation characters that should not be part of the matched text.
-static inline const char* find_boundary_c(const char* c) {
-  auto [ch, len] = get_utf8_char(c);
+// If the character containing `c` is a boundary character, returns the byte before
+// that character (so that `+ 1` yields the trimmed end). Otherwise returns `c`.
+// Boundary characters are trailing punctuation characters that should not be part
+// of the matched text. Only bytes inside [begin, end) are read.
+static inline const char* find_boundary_c(const char* c, const char* begin, const char* end) {
+  auto [ch, lead] = get_utf8_char(c, begin, end);
 
-  if (std::binary_search(std::begin(boundary_characters), std::end(boundary_characters), ch)) {
-    return c - len;
+  if (ch != 0 && std::binary_search(std::begin(boundary_characters), std::end(boundary_characters), ch)) {
+    return lead - 1;
   } else {
     return c;
   }

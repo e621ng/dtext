@@ -47,4 +47,14 @@ class DTextSectionTest < Minitest::Test
     assert_parse("<details><summary></summary><div><ul><li>a</li><li>b</li></ul></div></details><p>c</p>", "[section]\n* a\n* b\n[/section]\nc")
   end
 
+def test_section_title_with_single_bracket
+  assert_parse("<details><summary>a[b</summary><div><p>x</p></div></details>", "[section=a[b]x[/section]")
+end
+
+# A section title must not contain another section opener; otherwise a run of
+# "[section=" makes the scanner quadratic (E6SEC-302).
+def test_section_title_with_nested_opener
+  assert_parse("<p>[section=a</p><details><summary>b</summary><div><p>x</p></div></details>", "[section=a[section=b]x[/section]")
+  assert_parse("<p>[section,expanded=a</p><details><summary>b</summary><div><p>x</p></div></details>", "[section,expanded=a[section=b]x[/section]")
+end
 end
